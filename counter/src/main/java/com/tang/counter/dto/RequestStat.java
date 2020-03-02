@@ -31,7 +31,7 @@ public class RequestStat {
     private double p99ResponseTime;
 
     /**
-     * 次数
+     * 接口调用次数
      */
     private long count;
 

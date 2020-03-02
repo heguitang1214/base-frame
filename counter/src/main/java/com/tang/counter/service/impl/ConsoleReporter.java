@@ -3,7 +3,9 @@ package com.tang.counter.service.impl;
 import com.tang.counter.dto.RequestInfo;
 import com.tang.counter.dto.RequestStat;
 import com.tang.counter.service.MetricsStorage;
+import com.tang.counter.service.ScheduledReporter;
 import com.tang.counter.service.StatViewer;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -15,18 +17,23 @@ import java.util.concurrent.TimeUnit;
  *
  * @author tang
  */
-public class ConsoleReporter {
+public class ConsoleReporter extends ScheduledReporter {
 
-    private MetricsStorage metricsStorage;
-    private Aggregator aggregator;
-    private StatViewer viewer;
     private ScheduledExecutorService executor;
 
+    /**
+     * 兼顾灵活性和代码的可测试性，这个构造函数继续保留
+     */
     public ConsoleReporter(MetricsStorage metricsStorage, Aggregator aggregator, StatViewer viewer) {
-        this.metricsStorage = metricsStorage;
-        this.aggregator = aggregator;
-        this.viewer = viewer;
+        super(metricsStorage, aggregator, viewer);
         this.executor = Executors.newSingleThreadScheduledExecutor();
+    }
+
+    /**
+     * 兼顾代码的易用性，新增一个封装了默认依赖的构造函数
+     */
+    public ConsoleReporter() {
+        this(new RedisMetricsStorage(), new Aggregator(), new ConsoleViewer());
     }
 
     /**
