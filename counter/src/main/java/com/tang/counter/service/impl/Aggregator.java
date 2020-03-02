@@ -26,6 +26,7 @@ public class Aggregator {
     }
 
     private RequestStat doAggregate(List<RequestInfo> requestInfos, long durationInMillis) {
+        // 接口请求的响应时间
         List<Double> respTimes = new ArrayList<>();
         for (RequestInfo requestInfo : requestInfos) {
             double respTime = requestInfo.getResponseTime();
@@ -43,30 +44,48 @@ public class Aggregator {
         return requestStat;
     }
 
+    // TODO: 2020/3/2
     private double max(List<Double> dataset) {
-        return 0.0;
+        double max = -1;
+        for (Double d : dataset) {
+            if (d > max) {
+                max = d;
+            }
+        }
+        return max;
     }
 
     private double min(List<Double> dataset) {
-        return 0.0;
+        double min = -1;
+        for (Double d : dataset) {
+            if (d > min) {
+                min = d;
+            }
+        }
+        return min;
     }
 
+    // TODO: 2020/3/2  
     private double avg(List<Double> dataset) {
         return 0.0;
     }
 
+    // TODO: 2020/3/2  
     private double tps(int count, double duration) {
         return 0.0;
     }
 
+    // TODO: 2020/3/2  
     private double percentile999(List<Double> dataset) {
         return 0.0;
     }
 
+    // TODO: 2020/3/2
     private double percentile99(List<Double> dataset) {
         return 0.0;
     }
 
+    //todo
     private double percentile(List<Double> dataset, double ratio) {
         return 0.0;
     }

@@ -13,8 +13,6 @@ import java.util.Map;
  */
 public class RedisMetricsStorage implements MetricsStorage {
 
-    //... 省略属性和构造函数等...
-
     @Override
     public void saveRequestInfo(RequestInfo requestInfo) {
         //...

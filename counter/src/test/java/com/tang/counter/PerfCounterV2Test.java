@@ -17,7 +17,7 @@ public class PerfCounterV2Test {
 
         // 定时触发统计并将结果输出到邮件
         EmailViewer emailViewer = new EmailViewer();
-        emailViewer.addToAddress("wangzheng@xzg.com");
+        emailViewer.addToAddress("he_guitang@163.com");
         EmailReporter emailReporter = new EmailReporter(storage, aggregator, emailViewer);
         emailReporter.startDailyReport();
 
