@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author tang
  */
+@Deprecated
 public class Metrics {
     // Map 的 key 是接口名称，value 对应接口请求的响应时间或时间戳；
     private Map<String, List<Double>> responseTimes = new HashMap<>();

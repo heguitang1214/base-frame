@@ -11,12 +11,15 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 应用场景：统计下面两个接口 (注册和登录）的响应时间和访问次数
+ * 接口调用测试
  *
  * @author tang
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/counter/user")
 public class UserController {
+
+    private MetricsCollector metricsCollector = new MetricsCollector();
 
     private Metrics metrics = new Metrics();
 
@@ -34,6 +37,8 @@ public class UserController {
         metrics.recordResponseTime("register", respTime);
     }
 
+    @RequestMapping("/login")
+    @ResponseBody
     public UserVo login(String telephone, String password) {
         long startTimestamp = System.currentTimeMillis();
         metrics.recordTimestamp("login", startTimestamp);
