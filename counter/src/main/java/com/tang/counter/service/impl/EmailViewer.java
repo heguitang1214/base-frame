@@ -2,6 +2,8 @@ package com.tang.counter.service.impl;
 
 import com.tang.counter.dto.RequestStat;
 import com.tang.counter.service.StatViewer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +16,16 @@ import java.util.Map;
  */
 public class EmailViewer implements StatViewer {
 
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
     private EmailSender emailSender;
 
     private List<String> toAddresses = new ArrayList<>();
 
 
     public EmailViewer() {
-        this.emailSender = new EmailSender(/*省略参数*/);
+        // 省略参数
+        this.emailSender = new EmailSender();
     }
 
     public EmailViewer(EmailSender emailSender) {
@@ -40,5 +45,6 @@ public class EmailViewer implements StatViewer {
                        long startTimeInMillis, long endTimeInMills) {
         // format the requestStats to HTML style.
         // send it to email toAddresses.
+        logger.info("发送邮件数据");
     }
 }
