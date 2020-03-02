@@ -1,4 +1,4 @@
-package com.tang.counter.service;
+package com.tang.counter.service.impl;
 
 import com.tang.common.utils.JsonUtils;
 
@@ -11,7 +11,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 简单统计
  *
+ * @author tang
  */
 public class Metrics {
     // Map 的 key 是接口名称，value 对应接口请求的响应时间或时间戳；

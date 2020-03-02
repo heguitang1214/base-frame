@@ -7,7 +7,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Aggregator 类负责根据原始数据计算统计数据。
+ *
+ * @author tang
+ */
 public class Aggregator {
+
+
     public static RequestStat aggregate(List<RequestInfo> requestInfos, long durationInMillis) {
         double maxRespTime = Double.MIN_VALUE;
         double minRespTime = Double.MAX_VALUE;
@@ -16,6 +23,7 @@ public class Aggregator {
         double p99RespTime = -1;
         double sumRespTime = 0;
         long count = 0;
+
         // requestInfos 为数据源
         for (RequestInfo requestInfo : requestInfos) {
             ++count;
@@ -51,6 +59,7 @@ public class Aggregator {
             p999RespTime = requestInfos.get(idx999).getResponseTime();
             p99RespTime = requestInfos.get(idx99).getResponseTime();
         }
+
         RequestStat requestStat = new RequestStat();
         requestStat.setMaxResponseTime(maxRespTime);
         requestStat.setMinResponseTime(minRespTime);

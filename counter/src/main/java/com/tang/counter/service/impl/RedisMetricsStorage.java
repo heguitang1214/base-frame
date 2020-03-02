@@ -6,8 +6,15 @@ import com.tang.counter.service.MetricsStorage;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * redis存储具体实现
+ *
+ * @author tang
+ */
 public class RedisMetricsStorage implements MetricsStorage {
+
     //... 省略属性和构造函数等...
+
     @Override
     public void saveRequestInfo(RequestInfo requestInfo) {
         //...

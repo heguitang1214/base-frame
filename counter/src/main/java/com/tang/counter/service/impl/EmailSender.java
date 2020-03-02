@@ -1,7 +1,7 @@
 package com.tang.counter.service.impl;
 
 /**
- * Created by heguitang on 2020/2/29.
+ * 邮件发送
  */
 public class EmailSender {
 }

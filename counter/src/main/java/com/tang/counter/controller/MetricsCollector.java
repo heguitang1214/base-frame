@@ -4,8 +4,17 @@ import com.tang.counter.dto.RequestInfo;
 import com.tang.counter.service.MetricsStorage;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * MetricsCollector 类负责提供 API，来采集接口请求的原始数据。
+ *
+ * @author tang
+ */
 public class MetricsCollector {
-    private MetricsStorage metricsStorage;// 基于接口而非实现编程
+
+    /**
+     * 基于接口而非实现编程
+     */
+    private MetricsStorage metricsStorage;
 
     // 依赖注入
     public MetricsCollector(MetricsStorage metricsStorage) {

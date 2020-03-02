@@ -8,9 +8,9 @@ import com.tang.counter.service.impl.EmailReporter;
 import com.tang.counter.service.impl.RedisMetricsStorage;
 
 /**
- * Created by heguitang on 2020/2/29.
+ * 测试
  */
-public class DemoTest {
+public class CounterDemoTest {
     public static void main(String[] args) {
         MetricsStorage storage = new RedisMetricsStorage();
         MetricsCollector collector = new MetricsCollector(storage);

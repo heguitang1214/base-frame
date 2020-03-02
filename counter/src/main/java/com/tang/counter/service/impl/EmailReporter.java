@@ -6,11 +6,18 @@ import com.tang.counter.service.MetricsStorage;
 
 import java.util.*;
 
+/**
+ * 邮件显示
+ *
+ * @author tang
+ */
 public class EmailReporter {
     private static final Long DAY_HOURS_IN_SECONDS = 86400L;
 
     private MetricsStorage metricsStorage;
+
     private EmailSender emailSender;
+
     private List<String> toAddresses = new ArrayList<>();
 
     public EmailReporter(MetricsStorage metricsStorage) {
@@ -44,6 +51,7 @@ public class EmailReporter {
                 Map<String, List<RequestInfo>> requestInfos =
                         metricsStorage.getAllRequestInfosByDuration(startTimeInMillis, endTimeInMillis);
                 Map<String, RequestStat> stats = new HashMap<>();
+
                 for (Map.Entry<String, List<RequestInfo>> entry : requestInfos.entrySet()) {
                     String apiName = entry.getKey();
                     List<RequestInfo> requestInfosPerApi = entry.getValue();
