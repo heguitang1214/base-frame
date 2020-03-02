@@ -1,11 +1,9 @@
 package com.tang.counter.service.impl;
 
-import com.tang.common.utils.JsonUtils;
 import com.tang.counter.dto.RequestInfo;
 import com.tang.counter.dto.RequestStat;
 import com.tang.counter.service.MetricsStorage;
-
-import java.util.HashMap;
+import com.tang.counter.service.StatViewer;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -13,17 +11,21 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 命令行的显示
+ * 命令行的记录
  *
  * @author tang
  */
 public class ConsoleReporter {
 
     private MetricsStorage metricsStorage;
+    private Aggregator aggregator;
+    private StatViewer viewer;
     private ScheduledExecutorService executor;
 
-    public ConsoleReporter(MetricsStorage metricsStorage) {
+    public ConsoleReporter(MetricsStorage metricsStorage, Aggregator aggregator, StatViewer viewer) {
         this.metricsStorage = metricsStorage;
+        this.aggregator = aggregator;
+        this.viewer = viewer;
         this.executor = Executors.newSingleThreadScheduledExecutor();
     }
 
@@ -35,7 +37,6 @@ public class ConsoleReporter {
      */
     public void startRepeatedReport(long periodInSeconds, long durationInSeconds) {
         executor.scheduleAtFixedRate(new Runnable() {
-            // 定时任务的执行
             @Override
             public void run() {
                 // 第 1 个代码逻辑：根据给定的时间区间，从数据库中拉取数据；
@@ -44,19 +45,11 @@ public class ConsoleReporter {
                 long startTimeInMillis = endTimeInMillis - durationInMillis;
                 Map<String, List<RequestInfo>> requestInfos =
                         metricsStorage.getAllRequestInfosByDuration(startTimeInMillis, endTimeInMillis);
-                Map<String, RequestStat> stats = new HashMap<>();
-
-                for (Map.Entry<String, List<RequestInfo>> entry : requestInfos.entrySet()) {
-                    String apiName = entry.getKey();
-                    List<RequestInfo> requestInfosPerApi = entry.getValue();
-                    // 第 2 个代码逻辑：根据原始数据，计算得到统计数据；
-                    RequestStat requestStat = Aggregator.aggregate(requestInfosPerApi, durationInMillis);
-                    stats.put(apiName, requestStat);
-                }
+                // 第 2 个代码逻辑：根据原始数据，计算得到统计数据；
+                Map<String, RequestStat> requestStats = aggregator.aggregate(requestInfos, durationInMillis);
                 // 第 3 个代码逻辑：将统计数据显示到终端（命令行或邮件）；
-                System.out.println("Time Span: [" + startTimeInMillis + ", " + endTimeInMillis + "]");
-                System.out.println(JsonUtils.toJson(stats));
+                viewer.output(requestStats, startTimeInMillis, endTimeInMillis);
             }
-        }, 0, periodInSeconds, TimeUnit.SECONDS);
+        }, 0L, periodInSeconds, TimeUnit.SECONDS);
     }
 }
