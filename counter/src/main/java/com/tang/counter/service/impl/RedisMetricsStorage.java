@@ -1,5 +1,6 @@
 package com.tang.counter.service.impl;
 
+import com.tang.counter.common.Storage;
 import com.tang.counter.dto.RequestInfo;
 import com.tang.counter.service.MetricsStorage;
 
@@ -15,7 +16,7 @@ public class RedisMetricsStorage implements MetricsStorage {
 
     @Override
     public void saveRequestInfo(RequestInfo requestInfo) {
-        //...
+        Storage.add(requestInfo);
     }
 
     @Override
@@ -27,6 +28,6 @@ public class RedisMetricsStorage implements MetricsStorage {
     @Override
     public Map<String, List<RequestInfo>> getAllRequestInfosByDuration(long startTimestamp, long endTimestamp) {
         //...
-        return null;
+        return Storage.findAll();
     }
 }

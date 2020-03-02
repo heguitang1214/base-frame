@@ -2,8 +2,8 @@ package com.tang.counter.service.impl;
 
 import com.tang.counter.dto.RequestInfo;
 import com.tang.counter.dto.RequestStat;
+import com.tang.counter.service.AbstractScheduledReporter;
 import com.tang.counter.service.MetricsStorage;
-import com.tang.counter.service.ScheduledReporter;
 import com.tang.counter.service.StatViewer;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author tang
  */
-public class ConsoleReporter extends ScheduledReporter {
+public class ConsoleReporter extends AbstractScheduledReporter {
 
     private ScheduledExecutorService executor;
 

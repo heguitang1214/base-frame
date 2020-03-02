@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author tang
  */
-public abstract class ScheduledReporter {
+public abstract class AbstractScheduledReporter {
 
     /**
      * 最大统计区间 10minutes
@@ -25,7 +25,7 @@ public abstract class ScheduledReporter {
     protected Aggregator aggregator;
     protected StatViewer viewer;
 
-    public ScheduledReporter(MetricsStorage metricsStorage, Aggregator aggregator, StatViewer viewer) {
+    public AbstractScheduledReporter(MetricsStorage metricsStorage, Aggregator aggregator, StatViewer viewer) {
         this.metricsStorage = metricsStorage;
         this.aggregator = aggregator;
         this.viewer = viewer;

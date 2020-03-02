@@ -1,9 +1,7 @@
 package com.tang.counter.service.impl;
 
-import com.tang.counter.dto.RequestInfo;
-import com.tang.counter.dto.RequestStat;
+import com.tang.counter.service.AbstractScheduledReporter;
 import com.tang.counter.service.MetricsStorage;
-import com.tang.counter.service.ScheduledReporter;
 import com.tang.counter.service.StatViewer;
 
 import java.util.*;
@@ -13,7 +11,7 @@ import java.util.*;
  *
  * @author tang
  */
-public class EmailReporter extends ScheduledReporter {
+public class EmailReporter extends AbstractScheduledReporter {
 
     private static final Long DAY_HOURS_IN_SECONDS = 86400L;
 

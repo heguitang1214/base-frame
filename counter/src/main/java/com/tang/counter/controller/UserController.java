@@ -1,12 +1,13 @@
 package com.tang.counter.controller;
 
+import com.tang.counter.dto.RequestInfo;
 import com.tang.counter.service.impl.Metrics;
 import com.tang.counter.vo.UserVo;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -31,10 +32,18 @@ public class UserController {
     @ResponseBody
     public void register(UserVo user) {
         long startTimestamp = System.currentTimeMillis();
-        metrics.recordTimestamp("regsiter", startTimestamp);
-        //...
+
+        Random random = new Random(10000);
+        try {
+            Thread.sleep(random.nextLong());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         long respTime = System.currentTimeMillis() - startTimestamp;
-        metrics.recordResponseTime("register", respTime);
+
+        // 可以通过AOP切面来统一处理
+        RequestInfo requestInfo = new RequestInfo("register", respTime, startTimestamp);
+        metricsCollector.recordRequest(requestInfo);
     }
 
     @RequestMapping("/login")

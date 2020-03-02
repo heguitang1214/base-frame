@@ -2,6 +2,8 @@ package com.tang.counter.dto;
 
 /**
  * 统计内容
+ *
+ * @author tang
  */
 public class RequestStat {
 

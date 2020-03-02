@@ -11,7 +11,7 @@ import java.util.List;
 public class PerfCounterV31Test {
     public static void main(String[] args) {
         ConsoleReporter consoleReporter = new ConsoleReporter();
-        consoleReporter.startRepeatedReport(60, 60);
+        consoleReporter.startRepeatedReport(20, 20);
 
         List<String> emailToAddresses = new ArrayList<>();
         emailToAddresses.add("he_guitang@163.com");
