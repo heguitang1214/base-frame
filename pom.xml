@@ -19,6 +19,7 @@
         <module>common</module>
         <module>counter</module>
         <module>file-service</module>
+        <module>lottery-activity</module>
     </modules>
 
 
