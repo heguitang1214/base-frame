@@ -44,7 +44,9 @@ public class HttpURLClientUtil1 {
         String jsondata = httpReqInner(path, params, method, headers);
         Object rootNode = mapper.readTree(jsondata);
         jsondata = mapper.writeValueAsString(rootNode);
-        return mapper.readValue(jsondata, valueTypeRef);
+        // TODO: 2020/4/1
+//        return mapper.readValue(jsondata, valueTypeRef);
+        return (T) mapper.readValue(jsondata, valueTypeRef);
     }
 
     private static String httpReqInner(String path, Map<String, Object> params, String method, Map<String, String> headers) throws IOException {

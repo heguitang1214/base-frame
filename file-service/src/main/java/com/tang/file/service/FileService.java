@@ -1,7 +1,7 @@
 package com.tang.file.service;
 
 
-import com.wangchi.uploaddemo.service.httpclient.HttpURLClientUtil;
+import com.tang.file.service.httpclient.HttpURLClientUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
