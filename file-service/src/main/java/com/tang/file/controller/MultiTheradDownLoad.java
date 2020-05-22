@@ -288,8 +288,7 @@ public class MultiTheradDownLoad {
      * 为一个HttpURLConnection模拟请求头，伪装成一个浏览器发出的请求
      */
     private void setHeader(HttpURLConnection con) {
-        con.setRequestProperty(
-                "User-Agent",
+        con.setRequestProperty("User-Agent",
                 "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.3) Gecko/2008092510 Ubuntu/8.04 (hardy) Firefox/3.0.3");
         con.setRequestProperty("Accept-Language", "en-us,en;q=0.7,zh-cn;q=0.3");
         con.setRequestProperty("Accept-Encoding", "aa");
@@ -301,7 +300,6 @@ public class MultiTheradDownLoad {
                 "Fri, 02 Jan 2009 17:00:05 GMT");
         con.setRequestProperty("If-None-Match", "\"1261d8-4290-df64d224\"");
         con.setRequestProperty("Cache-Control", "max-age=0");
-        con.setRequestProperty("Referer",
-                "http://www.skycn.com/soft/14857.html");
+        con.setRequestProperty("Referer", "http://www.skycn.com/soft/14857.html");
     }
 }
