@@ -5,8 +5,6 @@ import java.util.Random;
 public class RandomTest {
     public static void main(String[] args) {
 
-        P p = new P();
-        p.t();
 
         Random r1 = new Random();
         Random r2 = new Random();
