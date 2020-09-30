@@ -20,6 +20,7 @@
         <module>counter</module>
         <module>file-service</module>
         <module>lottery-activity</module>
+        <module>mail</module>
     </modules>
 
 
