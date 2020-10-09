@@ -16,9 +16,8 @@ public interface IMailService {
      * @param to      邮件接收人
      * @param subject 邮件主题
      * @param content 邮件内容
-     * @return 是否发送成功
      */
-    boolean sendSimpleMail(String to, String subject, String content);
+    void sendSimpleMail(String to, String subject, String content);
 
 
     /**
@@ -28,9 +27,8 @@ public interface IMailService {
      * @param subject 邮件主题
      * @param content 邮件内容
      * @param files   附件字节流，key为文件名称，byte[]为对应的文件流
-     * @return 是否发送成功
      */
-    boolean sendAttachmentsMail(String to, String subject, String content, Map<String, byte[]> files);
+    void sendAttachmentsMail(String to, String subject, String content, Map<String, byte[]> files);
 
 
 }

@@ -2,11 +2,13 @@ package com.tang.mail.service.impl;
 
 import com.tang.mail.service.IMailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
@@ -28,12 +30,13 @@ public class MailServiceImpl implements IMailService {
 
     @Autowired
     private JavaMailSenderImpl javaMailSender;
-    //    @Value("spring.mail.username")
-    private String from = "1125642188@qq.com";
+
+    @Value("${spring.mail.username}")
+    private String from;
 
 
     @Override
-    public boolean sendSimpleMail(String to, String subject, String content) {
+    public void sendSimpleMail(String to, String subject, String content) {
         SimpleMailMessage message = new SimpleMailMessage();
         //邮件设置
         message.setSubject(subject);
@@ -44,13 +47,12 @@ public class MailServiceImpl implements IMailService {
             javaMailSender.send(message);
         } catch (Exception e) {
             // 日志
-            return false;
         }
-        return true;
     }
 
     @Override
-    public boolean sendAttachmentsMail(String to, String subject, String content, Map<String, byte[]> files) {
+    @Async("mailpool")
+    public void sendAttachmentsMail(String to, String subject, String content, Map<String, byte[]> files) {
         try {
             //1、创建一个复杂的邮件
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -70,10 +72,8 @@ public class MailServiceImpl implements IMailService {
             }
             javaMailSender.send(mimeMessage);
         } catch (Exception e) {
-
-            return false;
+            e.printStackTrace();
         }
-        return true;
     }
 
 
