@@ -1,4 +1,4 @@
-package com.tang.mail.service;
+package com.tang.mail.test;
 
 /**
  * Created by summer on 2017/5/4.

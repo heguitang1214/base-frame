@@ -1,144 +1,133 @@
 package com.tang.mail.service.impl;
 
-import com.tang.mail.service.MailService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.tang.mail.service.IMailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Created by summer on 2017/5/4.
+ * 邮件发送服务
+ *
+ * @author guitang.he@getech.cn
+ * @date 2020/9/30
  */
 @Component
-public class MailServiceImpl implements MailService {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+public class MailServiceImpl implements IMailService {
 
     @Autowired
-    private JavaMailSender mailSender;
+    private JavaMailSenderImpl javaMailSender;
+    //    @Value("spring.mail.username")
+    private String from = "1125642188@qq.com";
 
-    @Value("${mail.fromMail.addr}")
-    private String from;
 
-    /**
-     * 发送文本邮件
-     *
-     * @param to
-     * @param subject
-     * @param content
-     */
     @Override
-    public void sendSimpleMail(String to, String subject, String content) {
+    public boolean sendSimpleMail(String to, String subject, String content) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(from);
-        message.setTo(to);
+        //邮件设置
         message.setSubject(subject);
         message.setText(content);
-
+        message.setTo(to);
+        message.setFrom(from);
         try {
-            mailSender.send(message);
-            logger.info("简单邮件已经发送。");
+            javaMailSender.send(message);
         } catch (Exception e) {
-            logger.error("发送简单邮件时发生异常！", e);
+            // 日志
+            return false;
         }
-
+        return true;
     }
 
-    /**
-     * 发送html邮件
-     *
-     * @param to
-     * @param subject
-     * @param content
-     */
     @Override
-    public void sendHtmlMail(String to, String subject, String content) {
-        MimeMessage message = mailSender.createMimeMessage();
-
+    public boolean sendAttachmentsMail(String to, String subject, String content, Map<String, byte[]> files) {
         try {
-            //true表示需要创建一个multipart message
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom(from);
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(content, true);
+            //1、创建一个复杂的邮件
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-            mailSender.send(message);
-            logger.info("html邮件发送成功");
-        } catch (MessagingException e) {
-            logger.error("发送html邮件时发生异常！", e);
+            //邮件主题
+            helper.setSubject(subject);
+            //邮件内容
+            helper.setText(content);
+            helper.setTo(to);
+            helper.setFrom(from);
+
+            //添加附件
+            for (String str : files.keySet()) {
+                byte[] value = files.get(str);
+                helper.addAttachment(str, new ByteArrayResource(value));
+            }
+            javaMailSender.send(mimeMessage);
+        } catch (Exception e) {
+
+            return false;
         }
+        return true;
     }
 
 
-    /**
-     * 发送带附件的邮件
-     *
-     * @param to
-     * @param subject
-     * @param content
-     * @param filePath
-     */
-    @Override
-    public void sendAttachmentsMail(String to, String subject, String content, String filePath) {
-        MimeMessage message = mailSender.createMimeMessage();
+    public String sendMineMail() throws MessagingException {
+        Map<String, Object> params = new HashMap<>();
+        Map<String, byte[]> files = new HashMap<>();
+        //1、创建一个复杂的邮件
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-        try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom(from);
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(content, true);
+        files.put("XXX.jpg", getBytesByFile("D:\\素材\\952dc5ef044835440f6f7649a665d570.jpg"));
+        files.put("application.properties", getBytesByFile("D:\\素材\\application.properties"));
 
-            FileSystemResource file = new FileSystemResource(new File(filePath));
-            String fileName = filePath.substring(filePath.lastIndexOf(File.separator));
-            helper.addAttachment(fileName, file);
-            //helper.addAttachment("test"+fileName, file);
-
-            mailSender.send(message);
-            logger.info("带附件的邮件已经发送。");
-        } catch (MessagingException e) {
-            logger.error("发送带附件的邮件时发生异常！", e);
+        //邮件主题
+        helper.setSubject("SAM邮件");
+        //文本中添加图片
+        helper.addInline("image1", new FileSystemResource("D:\\素材\\5225cd55c0c365cd09d09d0980106cbb.jpg"));
+        //邮件内容
+        helper.setText("这是邮件的内容", true);
+        helper.setTo("guitang.he@tcl.com");
+        helper.setFrom("1125642188@qq.com");
+        //附件添加图片
+        for (String str : files.keySet()) {
+            byte[] value = files.get(str);
+            helper.addAttachment(str, new ByteArrayResource(value));
         }
+        javaMailSender.send(mimeMessage);
+        return "复杂邮件发送！";
     }
 
-
-    /**
-     * 发送正文中有静态资源（图片）的邮件
-     *
-     * @param to
-     * @param subject
-     * @param content
-     * @param rscPath
-     * @param rscId
-     */
-    @Override
-    public void sendInlineResourceMail(String to, String subject, String content, String rscPath, String rscId) {
-        MimeMessage message = mailSender.createMimeMessage();
-
+    private static byte[] getBytesByFile(String filePath) {
         try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom(from);
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(content, true);
+            File file = new File(filePath);
+            //获取输入流
+            FileInputStream fis = new FileInputStream(file);
 
-            FileSystemResource res = new FileSystemResource(new File(rscPath));
-            helper.addInline(rscId, res);
-
-            mailSender.send(message);
-            logger.info("嵌入静态资源的邮件已经发送。");
-        } catch (MessagingException e) {
-            logger.error("发送嵌入静态资源的邮件时发生异常！", e);
+            //新的 byte 数组输出流，缓冲区容量1024byte
+            ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
+            //缓存
+            byte[] b = new byte[1024];
+            int n;
+            while ((n = fis.read(b)) != -1) {
+                bos.write(b, 0, n);
+            }
+            fis.close();
+            //改变为byte[]
+            byte[] data = bos.toByteArray();
+            //
+            bos.close();
+            return data;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
+
 }
