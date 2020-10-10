@@ -14,7 +14,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 @Configuration
 @EnableAsync
-public class ExecutorConfig {
+public class MailThreadPoolConfig {
 
     @Bean("mailpool")
     public Executor asyncServiceExecutor() {
