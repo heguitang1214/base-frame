@@ -19,7 +19,6 @@ import java.util.Map;
 @Component
 public class ResourcePathTemplateService implements ITemplate {
 
-    // TODO: 2020/10/9 这里为什么一定要使用注入？？？
     @Autowired
     private TemplateEngine templateEngine;
 
@@ -33,14 +32,13 @@ public class ResourcePathTemplateService implements ITemplate {
         if (StringUtils.isEmpty(tempName)) {
             throw new RuntimeException("template name not null");
         }
-        if (CollectionUtils.isEmpty(ognlParam)){
+        if (CollectionUtils.isEmpty(ognlParam)) {
             throw new RuntimeException("template data not null");
         }
 
         Context context = new Context();
-
         context.setVariables(ognlParam);
-
+        // 这里使用Spring注入的对象，而不是使用new对象
         return templateEngine.process(tempName, context);
     }
 }

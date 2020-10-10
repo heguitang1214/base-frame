@@ -1,5 +1,6 @@
 package com.tang.mail.service.impl;
 
+import com.tang.mail.service.IMailCallback;
 import com.tang.mail.service.IMailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.Map;
 
 /**
@@ -157,6 +157,13 @@ public class MailServiceImpl implements IMailService {
     public void sendThymeleafMailBydb(String subject, String to, String cc, String content) {
         // TODO: 2020/10/10 需要实现
     }
+
+    @Override
+    public void sendSimpleMailCallback(String to, String subject, String content, IMailCallback callback) {
+        sendSimpleMail(to, subject, content);
+        callback.mailCallback();
+    }
+
 
     //==============================================================================
 

@@ -75,7 +75,14 @@ public interface IMailService {
     void sendThymeleafMailBydb(String subject, String to, String cc, String content);
 
 
-    // 支持回调的方式
+    /**
+     * 发送简单邮件，支持回调
+     *
+     * @param to      邮件接收人
+     * @param subject 邮件主题
+     * @param content 邮件内容
+     */
+    void sendSimpleMailCallback(String to, String subject, String content, IMailCallback callback);
 
 
 }
