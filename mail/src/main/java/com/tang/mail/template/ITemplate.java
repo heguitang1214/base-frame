@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * 获取邮件发送内容的模板
  *
- * @author guitang.he@getech.cn
+ * @author tang
  * @date 2020/10/9
  */
 public interface ITemplate {

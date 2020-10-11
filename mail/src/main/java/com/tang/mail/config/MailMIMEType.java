@@ -9,7 +9,7 @@ import java.util.Map;
  * 邮件扩展类型
  * 参考地址：https,//www.sitepoint.com/mime-types-complete-list/
  *
- * @author guitang.he@getech.cn
+ * @author tang
  * @date 2020/10/10
  */
 public class MailMIMEType {

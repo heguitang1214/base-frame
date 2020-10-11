@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * 发送邮件接口
  *
- * @author guitang.he@getech.cn
+ * @author tang
  * @date 2020/10/9
  */
 public interface IMailService {
