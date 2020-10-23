@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * 静态资源模板
  *
- * @author guitang.he@getech.cn
+ * @author tang
  * @date 2020/10/9
  */
 public class StaticResourceTemplate implements ITemplate {

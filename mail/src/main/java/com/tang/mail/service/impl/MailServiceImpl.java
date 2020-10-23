@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * 邮件发送服务
  *
- * @author guitang.he@getech.cn
+ * @author tang
  * @date 2020/9/30
  */
 @Component

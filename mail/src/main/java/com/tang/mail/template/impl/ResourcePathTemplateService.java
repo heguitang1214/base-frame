@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * 使用资源模板获取数据
  *
- * @author guitang.he@getech.cn
+ * @author tang
  * @date 2020/10/9
  */
 @Component
