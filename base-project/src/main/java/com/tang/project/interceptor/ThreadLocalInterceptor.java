@@ -2,8 +2,11 @@ package com.tang.project.interceptor;
 
 import com.tang.project.dto.UserDto;
 import com.tang.project.utils.ThreadLocalUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 public class ThreadLocalInterceptor implements HandlerInterceptor {
+
+    private static final Logger logger = LoggerFactory.getLogger(ThreadLocalInterceptor.class);
 
     /**
      * ThreadLocal 使用demo
@@ -31,7 +36,14 @@ public class ThreadLocalInterceptor implements HandlerInterceptor {
         UserDto userDto = new UserDto();
         ThreadLocalUtils.setUser(userDto);
 
+        logger.info("ThreadLocalInterceptor 拦截器的 preHandle() 方法......");
+
         return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        logger.info("ThreadLocalInterceptor 拦截器的 postHandle() 方法......");
     }
 
     /**
@@ -40,6 +52,8 @@ public class ThreadLocalInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
                                 Object handler, Exception ex) throws Exception {
+
+        logger.info("ThreadLocalInterceptor 拦截器的 afterCompletion() 方法......");
         ThreadLocalUtils.remove();
     }
 }

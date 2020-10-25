@@ -1,9 +1,9 @@
-package com.tang.project.dto;
+package com.tang.project.entry;
 
 
 import java.io.Serializable;
 
-public class UserDto implements Serializable {
+public class UserDemo implements Serializable {
 
     /**
      * 主键

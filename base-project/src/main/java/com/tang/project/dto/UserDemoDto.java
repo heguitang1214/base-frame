@@ -1,9 +1,7 @@
 package com.tang.project.dto;
 
 
-import java.io.Serializable;
-
-public class UserDto implements Serializable {
+public class UserDemoDto extends DataPermissionBase {
 
     /**
      * 主键
