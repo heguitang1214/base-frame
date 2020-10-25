@@ -12,6 +12,11 @@
     <artifactId>base-project</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>com.tang</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <!-- mysql依赖 -->
         <dependency>
             <groupId>mysql</groupId>
@@ -48,12 +53,7 @@
             <artifactId>google-collections</artifactId>
             <version>1.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.tang</groupId>
-            <artifactId>common</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
+
 
     </dependencies>
 
