@@ -66,6 +66,7 @@ public class DataPermissionUtil {
         Matcher matcher = compile.matcher(expression);
         while (matcher.find()) {
             String group = matcher.group();
+
             if (group.contains("_")) {
                 // TODO: 2020/10/25 特殊兼容处理
                 //group.toUpperCase()
