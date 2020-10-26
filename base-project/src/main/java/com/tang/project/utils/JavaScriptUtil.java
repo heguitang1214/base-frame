@@ -11,7 +11,6 @@ import java.util.Set;
 /**
  * java执行javaScript代码的工具类
  *
- * @author weizj
  */
 public class JavaScriptUtil {
 
