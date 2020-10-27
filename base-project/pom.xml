@@ -49,9 +49,9 @@
         </dependency>
         <!-- 反射动态添加属性 -->
         <dependency>
-            <groupId>com.google.collections</groupId>
-            <artifactId>google-collections</artifactId>
-            <version>1.0</version>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>3.2.4</version>
         </dependency>
 
 
