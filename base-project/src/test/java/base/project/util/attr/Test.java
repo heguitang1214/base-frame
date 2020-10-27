@@ -34,10 +34,12 @@ public class Test {
         orderDetailList.add(orderDetail2);
 
         try {
-            HashMap addMap = new HashMap();
-            HashMap addValMap = new HashMap();
+            HashMap<String, Class<?>> addMap = new HashMap<>();
+            HashMap<String, Object> addValMap = new HashMap<>();
             addMap.put("orderDetail", Class.forName("java.util.List"));
+            addMap.put("testAttr", Class.forName("java.lang.String"));
             addValMap.put("orderDetail", orderDetailList);
+            addValMap.put("testAttr", "这是用来测试的一个属性");
             Object obj2 = new ClassUtil().dynamicClass(order, addMap, addValMap);
 
             System.out.println(JSON.toJSONString(obj2));

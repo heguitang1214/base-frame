@@ -1,10 +1,12 @@
-package base.project.util.attr;
+package com.tang.project.utils;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 public class ClassUtil {
 

@@ -1,6 +1,7 @@
 package base.project.util.attr;
 
 import net.sf.cglib.beans.*;
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.*;
 
@@ -9,7 +10,7 @@ public class DynamicBean {
      * 动态生成的类
      */
     private Object object = null;
-    
+
     /**
      * 存放属性名称以及属性的类型
      */
@@ -19,21 +20,23 @@ public class DynamicBean {
         super();
     }
 
-    public DynamicBean(Map propertyMap) {
+    public DynamicBean(Map<String, Class<?>> propertyMap) {
         this.object = generateBean(propertyMap);
         this.beanMap = BeanMap.create(this.object);
     }
 
     /**
-     * @param propertyMap
-     * @return
+     * 利用属性名和属性类型，生成一个新的Bean
+     *
+     * @param propertyMap 类属性Map，属性名-属性类型
+     * @return 新的bean对象
      */
-    private Object generateBean(Map propertyMap) {
+    private Object generateBean(Map<String, Class<?>> propertyMap) {
         BeanGenerator generator = new BeanGenerator();
-        Set keySet = propertyMap.keySet();
-        for (Iterator i = keySet.iterator(); i.hasNext(); ) {
-            String key = (String) i.next();
-            generator.addProperty(key, (Class) propertyMap.get(key));
+        Set<String> keySet = propertyMap.keySet();
+        for (Iterator<String> i = keySet.iterator(); i.hasNext(); ) {
+            String key = i.next();
+            generator.addProperty(key, propertyMap.get(key));
         }
         return generator.create();
     }
@@ -61,7 +64,7 @@ public class DynamicBean {
     /**
      * 得到该实体bean对象
      *
-     * @return
+     * @return 该实体bean对象
      */
     public Object getObject() {
         return this.object;
