@@ -1,4 +1,4 @@
-package com.tang.common.utils;//package cn.getech.poros.usercenter.utils;
+package com.tang.common.utils;
 //
 //import java.util.regex.Matcher;
 //import java.util.regex.Pattern;
