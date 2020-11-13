@@ -3,20 +3,12 @@ package base.project.sqlparser;
 import com.tang.common.utils.ReflectionsUtils;
 import com.tang.project.entry.UserDemo;
 import com.tang.project.utils.DataPermissionUtil;
-import com.tang.project.utils.JavaScriptUtil;
-import org.junit.platform.commons.util.StringUtils;
 
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import javax.xml.crypto.Data;
-import java.io.*;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * TODO
@@ -28,25 +20,6 @@ public class Test {
 
 
     public static void main(String[] args) throws ScriptException, FileNotFoundException {
-
-        Integer testExecute = (Integer) JavaScriptUtil.execute("2*3");
-        String testExecuteForAttribute = (String) JavaScriptUtil.executeForAttribute("var value = 'a'+ 'dc'", "value");
-        Boolean testExecuteForFirstAttribute = (Boolean) JavaScriptUtil.executeForFirstAttribute("var a = 6==2*3");
-
-        // id > 5
-        Boolean testExecute1 = (Boolean) JavaScriptUtil.execute("'张三' == '张三' && 4 == 4");
-        Boolean testExecute2 = (Boolean) JavaScriptUtil.execute(" 5 > 4");
-
-        System.out.println(testExecute1);
-        System.out.println(testExecute2);
-
-
-        System.out.println(testExecute);
-        System.out.println(testExecuteForAttribute);
-        System.out.println(testExecuteForFirstAttribute);
-
-        System.out.println("test over ....");
-
         System.out.println("==========================");
 
         UserDemo userDemo = new UserDemo();

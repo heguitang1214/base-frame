@@ -1,9 +1,9 @@
-package base.project.sqlparser;
+package base.project.util.js;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Js {
+public class JsPattern {
 
     public final static String VARIABLE_NAME_PATTERN1 = "\\{\\{([A-Za-z_]+)}}";
     public final static String VARIABLE_NAME_PATTERN2 = "#\\{([A-Za-z_]+)}";

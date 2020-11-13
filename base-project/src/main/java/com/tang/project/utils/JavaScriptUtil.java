@@ -10,7 +10,6 @@ import java.util.Set;
 
 /**
  * java执行javaScript代码的工具类
- *
  */
 public class JavaScriptUtil {
 
@@ -92,4 +91,26 @@ public class JavaScriptUtil {
         }
         return null;
     }
+
+
+    /**
+     * 解析js表达式
+     *
+     * @param script   js脚本
+     * @param variable 变量
+     * @return js表达式代表的结果
+     * @throws ScriptException 脚本异常
+     */
+    public static boolean analysisVarExpression(String script, Map<String, Object> variable) throws ScriptException {
+        for (String key : variable.keySet()) {
+            Object value = variable.get(key);
+            javaScriptEngine.put(key, value);
+        }
+        Object result = javaScriptEngine.eval(script);
+        if (result instanceof Boolean) {
+            return (Boolean) result;
+        }
+        return false;
+    }
+
 }

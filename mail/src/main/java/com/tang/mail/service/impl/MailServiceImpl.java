@@ -1,5 +1,6 @@
 package com.tang.mail.service.impl;
 
+import com.tang.mail.config.MailSenderConfig;
 import com.tang.mail.service.IMailCallback;
 import com.tang.mail.service.IMailService;
 import org.slf4j.Logger;
@@ -34,8 +35,12 @@ public class MailServiceImpl implements IMailService {
     @Autowired
     private JavaMailSenderImpl javaMailSender;
 
+    @Autowired
+    private MailSenderConfig mailSenderConfig;
+
     @Value("${spring.mail.username}")
     private String from;
+
 
     private final static String SEPARATOR_COMMA = ",";
 
@@ -79,6 +84,8 @@ public class MailServiceImpl implements IMailService {
         message.setTo(to);
         message.setFrom(from);
         try {
+//            mailSenderConfig.getSender().send(message);
+            javaMailSender.getSession().setDebug(true);
             javaMailSender.send(message);
         } catch (Exception e) {
             logger.error("发送简单邮件失败，异常信息为：", e);
