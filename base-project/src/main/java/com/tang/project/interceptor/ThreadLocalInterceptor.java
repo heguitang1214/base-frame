@@ -38,7 +38,7 @@ public class ThreadLocalInterceptor implements HandlerInterceptor {
         UserDto userDto = new UserDto();
         ThreadLocalUtils.setUser(userDto);
 
-        InputStream inputStream = Resources.getResourceAsStream("test.json");
+//        InputStream inputStream = Resources.getResourceAsStream("test.json");
         // 读取本地文件中的数据
 //        StringBuilder sb = new StringBuilder();
 //        byte[] buffer = new byte[1024];
