@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class MySQLSqlParser {
     public static void main(String[] args) throws SQLSyntaxErrorException {
-        String sql = "select  name ,id from acct where id =10";
+        String sql = "select name ,id from acct where id =10";
         String dbType = "mysql";
         System.out.println("原始SQL 为 ： " + sql);
         SQLSelectStatement statement = (SQLSelectStatement) parser(sql, dbType);

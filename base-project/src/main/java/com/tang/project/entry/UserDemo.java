@@ -2,6 +2,7 @@ package com.tang.project.entry;
 
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 public class UserDemo implements Serializable {
 
@@ -34,6 +35,8 @@ public class UserDemo implements Serializable {
      * 手机号
      */
     private String mobile;
+
+    private LocalDate birthday;
 
     /**
      * 地址
@@ -94,5 +97,27 @@ public class UserDemo implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDemo{" +
+                "id='" + id + '\'' +
+                ", sex='" + sex + '\'' +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", birthday=" + birthday +
+                ", address='" + address + '\'' +
+                '}';
     }
 }
