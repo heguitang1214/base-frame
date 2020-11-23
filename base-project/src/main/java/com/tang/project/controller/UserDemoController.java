@@ -1,6 +1,7 @@
 package com.tang.project.controller;
 
 import com.tang.project.dto.UserDemoDto;
+import com.tang.project.entry.UserDemo;
 import com.tang.project.service.UserDemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,8 @@ public class UserDemoController {
     private UserDemoService userDemoService;
 
     @GetMapping("/list")
-    public List<UserDemoDto> list() {
+    public List<UserDemo> list() {
+        userDemoService.test();
         return userDemoService.list();
     }
 

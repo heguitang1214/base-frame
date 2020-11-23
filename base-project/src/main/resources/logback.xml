@@ -109,6 +109,20 @@ scanPeriod：设置监测配置文件是否有修改的时间间隔，如果没�
 <!--        </triggeringPolicy>-->
 <!--    </appender>-->
 
+
+    <!-- 文件日志肯定需要按时间和日期进行分割和归档处理 -->
+<!--    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">-->
+<!--        &lt;!&ndash;日志文件保留天数&ndash;&gt;-->
+<!--        <MaxHistory>30</MaxHistory>-->
+<!--        &lt;!&ndash;日志文件最大的大小&ndash;&gt;-->
+<!--        <MaxFileSize>100MB</MaxFileSize>-->
+<!--        &lt;!&ndash;日志整体最大-->
+<!--         可选的totalSizeCap属性控制所有归档文件的总大小。当超过总大小上限时，将异步删除最旧的存档。-->
+<!--         totalSizeCap属性也需要设置maxHistory属性。此外，“最大历史”限制总是首先应用，“总大小上限”限制其次应用。-->
+<!--         &ndash;&gt;-->
+<!--        <totalSizeCap>10GB</totalSizeCap>-->
+<!--    </rollingPolicy>-->
+
     <!-- 异步记录日志 -->
     <appender name="ASYNCFILE" class="ch.qos.logback.classic.AsyncAppender">
         <appender-ref ref="FILE"/>

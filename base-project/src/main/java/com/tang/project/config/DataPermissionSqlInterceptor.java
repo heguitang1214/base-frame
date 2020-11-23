@@ -9,6 +9,8 @@
 //import com.alibaba.druid.sql.ast.statement.SQLUpdateSetItem;
 //import com.alibaba.druid.sql.ast.statement.SQLUpdateStatement;
 //import com.alibaba.druid.util.JdbcConstants;
+//import com.tang.project.utils.ThreadLocalUtils;
+//import lombok.extern.slf4j.Slf4j;
 //import org.apache.ibatis.cache.CacheKey;
 //import org.apache.ibatis.executor.Executor;
 //import org.apache.ibatis.executor.parameter.ParameterHandler;
@@ -51,17 +53,6 @@
 //    private static final String WHERE = "WHERE";
 //    private static final String FROM = "FROM";
 //    private static final String AND = "AND";
-//
-//
-//    static {
-//        try {
-//            InputStream inputStream = Resources.getResourceAsStream("dataPermission.json");
-//            DataPermissionDTO dataPermissionDTO = JsonUtil.parse(inputStream, DataPermissionDTO.class);
-//            ThreadLocalUtils.setDataPermission(dataPermissionDTO);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 //
 //
 //    @Override
@@ -144,14 +135,14 @@
 //
 //
 //    private String sqlRewrite(String sql, SqlCommandType type) {
-//        return sqlRewrite(sql, type, ThreadLocalUtils.getDataPermission(), null);
+//        return sqlRewrite(sql, type, null, null);
 //    }
 //
 //    private String sqlRewrite(String sql, SqlCommandType type, Object parameter) {
-//        return sqlRewrite(sql, type, ThreadLocalUtils.getDataPermission(), parameter);
+//        return sqlRewrite(sql, type, null, parameter);
 //    }
 //
-//    private String sqlRewrite(String sql, SqlCommandType type, DataPermissionDTO param, Object parameter) {
+//    private String sqlRewrite(String sql, SqlCommandType type, Object param, Object parameter) {
 //        permissionParamCheck(param);
 //        // insert 条件
 //        if (SqlCommandType.INSERT == type) {
@@ -168,7 +159,7 @@
 //        return sql;
 //    }
 //
-//    private String sqlRewriteInsert(String sql, DataPermissionDTO param, Object parameter) {
+//    private String sqlRewriteInsert(String sql, Object param, Object parameter) {
 //        // SQL 解析
 //        SQLStatement sqlStatements = SQLUtils.parseSingleMysqlStatement(sql);
 //        List<DataFieldDTO> addColomnList = param.getFieldRuleDTO().getAddColomnList();
@@ -204,7 +195,7 @@
 //        return SQLUtils.toSQLString(sqlInsertStatement, DB_TYPE);
 //    }
 //
-//    private String sqlRewriteUpdate(String sql, DataPermissionDTO param) {
+//    private String sqlRewriteUpdate(String sql, Object param) {
 //        // SQL 解析
 //        // 官网地址：https://github.com/alibaba/druid/wiki/SQL-Parser
 ////        MySqlSchemaStatVisitor visitor = new MySqlSchemaStatVisitor();
@@ -275,7 +266,7 @@
 //        return sb.toString();
 //    }
 //
-//    private void permissionParamCheck(DataPermissionDTO param) {
+//    private void permissionParamCheck(Object param) {
 //        if (param == null) {
 //            throw new RuntimeException("当前用户对应的权限数据为空");
 //        }
