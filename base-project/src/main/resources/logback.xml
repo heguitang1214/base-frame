@@ -110,7 +110,7 @@ scanPeriod：设置监测配置文件是否有修改的时间间隔，如果没�
 <!--    </appender>-->
 
 
-    <!-- 文件日志肯定需要按时间和日期进行分割和归档处理 -->
+    <!-- 文件日志肯定需要按时间和日期进行分割和归档处理，这里的版本不使用 -->
 <!--    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">-->
 <!--        &lt;!&ndash;日志文件保留天数&ndash;&gt;-->
 <!--        <MaxHistory>30</MaxHistory>-->
