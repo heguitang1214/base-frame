@@ -46,11 +46,8 @@ public class MySQLSqlParserDemo {
 
             //获取表名称
             System.out.println("Tables : " + visitor.getTables());
-
             TableStat.Name name = new TableStat.Name("tenant_product_combo");
             System.out.println(visitor.getTables().containsKey(name));
-
-
             //获取操作方法名称,依赖于表名称
             System.out.println("Manipulation : " + visitor.getTables());
             //获取字段名称

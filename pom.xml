@@ -33,26 +33,34 @@
         <!-- 指明使用utf-8编码 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>2.2.5.RELEASE</spring.boot.version>
+        <hutool.version>5.4.3</hutool.version>
     </properties>
 
+
+    <!--    <dependencyManagement>-->
+    <!--        <dependencies>-->
+    <!--            -->
+    <!--            -->
+    <!--        </dependencies>-->
+    <!--    </dependencyManagement>-->
+
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring.boot.version}</version>
         </dependency>
         <!--lombok表达式-->
-<!--        <dependency>-->
-<!--            <groupId>org.projectlombok</groupId>-->
-<!--            <artifactId>lombok</artifactId>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.projectlombok</groupId>-->
+        <!--            <artifactId>lombok</artifactId>-->
+        <!--            <optional>true</optional>-->
+        <!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-            <version>2.2.5.RELEASE</version>
+            <version>${spring.boot.version}</version>
         </dependency>
 
         <dependency>
@@ -84,7 +92,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.4.3</version>
+            <version>${hutool.version}</version>
         </dependency>
 
     </dependencies>

@@ -11,7 +11,7 @@ scanPeriod：设置监测配置文件是否有修改的时间间隔，如果没�
     <!-- property 标签：属性配置标签，将公共的属性抽离出来
         定义日志文件的存储地址，勿在 LogBack 的配置中使用相对路径
      -->
-    <property name="LOG_HOME" value="D:/log"/>
+    <property name="LOG_HOME" value="/Users/heguitang/logs/java/"/>
     <property name="APP_NAME" value="base-pro"/>
     <!--读取配置文件-->
     <!--<property resource="properties/${spring.profiles.active:-local}/project.change.properties"/>-->
@@ -92,36 +92,36 @@ scanPeriod：设置监测配置文件是否有修改的时间间隔，如果没�
     </appender>
 
     <!-- 按照每天生成日志文件，自动打印，不需要在 root、logger标签中配置 -->
-<!--    <appender name="FILE_EVERYDAY" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
-<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
-<!--            &lt;!&ndash;日志文件输出的文件名，拼接时间&ndash;&gt;-->
-<!--            <FileNamePattern>${LOG_HOME}/myApp.log.%d{yyyy-MM-dd}.log</FileNamePattern>-->
-<!--            &lt;!&ndash;日志最多保存多少天&ndash;&gt;-->
-<!--            <MaxHistory>7</MaxHistory>-->
-<!--        </rollingPolicy>-->
-<!--        <layout class="ch.qos.logback.classic.PatternLayout">-->
-<!--            &lt;!&ndash;格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符&ndash;&gt;-->
-<!--            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>-->
-<!--        </layout>-->
-<!--        &lt;!&ndash;日志文件最大的大小&ndash;&gt;-->
-<!--        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
-<!--            <MaxFileSize>10MB</MaxFileSize>-->
-<!--        </triggeringPolicy>-->
-<!--    </appender>-->
+    <!--    <appender name="FILE_EVERYDAY" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+    <!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+    <!--            &lt;!&ndash;日志文件输出的文件名，拼接时间&ndash;&gt;-->
+    <!--            <FileNamePattern>${LOG_HOME}/myApp.log.%d{yyyy-MM-dd}.log</FileNamePattern>-->
+    <!--            &lt;!&ndash;日志最多保存多少天&ndash;&gt;-->
+    <!--            <MaxHistory>7</MaxHistory>-->
+    <!--        </rollingPolicy>-->
+    <!--        <layout class="ch.qos.logback.classic.PatternLayout">-->
+    <!--            &lt;!&ndash;格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符&ndash;&gt;-->
+    <!--            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>-->
+    <!--        </layout>-->
+    <!--        &lt;!&ndash;日志文件最大的大小&ndash;&gt;-->
+    <!--        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
+    <!--            <MaxFileSize>10MB</MaxFileSize>-->
+    <!--        </triggeringPolicy>-->
+    <!--    </appender>-->
 
 
     <!-- 文件日志肯定需要按时间和日期进行分割和归档处理，这里的版本不使用 -->
-<!--    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">-->
-<!--        &lt;!&ndash;日志文件保留天数&ndash;&gt;-->
-<!--        <MaxHistory>30</MaxHistory>-->
-<!--        &lt;!&ndash;日志文件最大的大小&ndash;&gt;-->
-<!--        <MaxFileSize>100MB</MaxFileSize>-->
-<!--        &lt;!&ndash;日志整体最大-->
-<!--         可选的totalSizeCap属性控制所有归档文件的总大小。当超过总大小上限时，将异步删除最旧的存档。-->
-<!--         totalSizeCap属性也需要设置maxHistory属性。此外，“最大历史”限制总是首先应用，“总大小上限”限制其次应用。-->
-<!--         &ndash;&gt;-->
-<!--        <totalSizeCap>10GB</totalSizeCap>-->
-<!--    </rollingPolicy>-->
+    <!--    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">-->
+    <!--        &lt;!&ndash;日志文件保留天数&ndash;&gt;-->
+    <!--        <MaxHistory>30</MaxHistory>-->
+    <!--        &lt;!&ndash;日志文件最大的大小&ndash;&gt;-->
+    <!--        <MaxFileSize>100MB</MaxFileSize>-->
+    <!--        &lt;!&ndash;日志整体最大-->
+    <!--         可选的totalSizeCap属性控制所有归档文件的总大小。当超过总大小上限时，将异步删除最旧的存档。-->
+    <!--         totalSizeCap属性也需要设置maxHistory属性。此外，“最大历史”限制总是首先应用，“总大小上限”限制其次应用。-->
+    <!--         &ndash;&gt;-->
+    <!--        <totalSizeCap>10GB</totalSizeCap>-->
+    <!--    </rollingPolicy>-->
 
     <!-- 异步记录日志 -->
     <appender name="ASYNCFILE" class="ch.qos.logback.classic.AsyncAppender">
@@ -130,7 +130,7 @@ scanPeriod：设置监测配置文件是否有修改的时间间隔，如果没�
 
 
     <!--抽离Controller的日志-->
-    <appender name="CONTROLLER"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="CONTROLLER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
             <FileNamePattern>${LOG_HOME}/${APP_NAME}_controller.log.%d{yyyy-MM-dd}.log</FileNamePattern>
@@ -156,9 +156,9 @@ scanPeriod：设置监测配置文件是否有修改的时间间隔，如果没�
             additivity：是否向上级loger传递打印信息。默认是true（具有继承关系）。
             如果将additivity设置为true，日志打印了两次，因为打印信息向上级传递，logger本身打印一次，root接到后又打印一次。
     -->
-<!--    <logger name="com.tang.project" level="DEBUG" additivity="false">-->
-<!--        <appender-ref ref="FILE"/>-->
-<!--    </logger>-->
+    <!--    <logger name="com.tang.project" level="DEBUG" additivity="false">-->
+    <!--        <appender-ref ref="FILE"/>-->
+    <!--    </logger>-->
 
     <root level="INFO">
         <appender-ref ref="CONSOLE_COLOUR"/>
@@ -167,17 +167,17 @@ scanPeriod：设置监测配置文件是否有修改的时间间隔，如果没�
 
 
     <!--日志异步到数据库-->
-<!--    <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">-->
-<!--        &lt;!&ndash;日志异步到数据库 &ndash;&gt;-->
-<!--        <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">-->
-<!--            &lt;!&ndash;连接池 &ndash;&gt;-->
-<!--            <dataSource class="com.mchange.v2.c3p0.ComboPooledDataSource">-->
-<!--                <driverClass>com.mysql.jdbc.Driver</driverClass>-->
-<!--                <url>jdbc:mysql://127.0.0.1:3306/databaseName</url>-->
-<!--                <user>root</user>-->
-<!--                <password>root</password>-->
-<!--            </dataSource>-->
-<!--        </connectionSource>-->
-<!--    </appender>-->
+    <!--    <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">-->
+    <!--        &lt;!&ndash;日志异步到数据库 &ndash;&gt;-->
+    <!--        <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">-->
+    <!--            &lt;!&ndash;连接池 &ndash;&gt;-->
+    <!--            <dataSource class="com.mchange.v2.c3p0.ComboPooledDataSource">-->
+    <!--                <driverClass>com.mysql.jdbc.Driver</driverClass>-->
+    <!--                <url>jdbc:mysql://127.0.0.1:3306/databaseName</url>-->
+    <!--                <user>root</user>-->
+    <!--                <password>root</password>-->
+    <!--            </dataSource>-->
+    <!--        </connectionSource>-->
+    <!--    </appender>-->
 
 </configuration>

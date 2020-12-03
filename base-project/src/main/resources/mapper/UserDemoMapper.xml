@@ -13,5 +13,9 @@
     <!--        <result column="sex" property="sex"/>-->
     <!--    </resultMap>-->
 
+    <select id="sqlTest" resultType="com.tang.project.entry.UserDemo">
+--         SELECT * FROM user_demo ORDER BY id DESC
+        SELECT u.id,r.`name` as userName FROM user_demo u LEFT JOIN role_demo r ON u.id = r.user_demo_id ORDER BY u.id DESC
+    </select>
 
 </mapper>

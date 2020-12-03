@@ -19,8 +19,12 @@ public class UserDemoController {
 
     @GetMapping("/list")
     public List<UserDemo> list() {
-        userDemoService.test();
-        return userDemoService.list();
+        return userDemoService.test();
+    }
+
+    @GetMapping("/sqlTest")
+    public List<UserDemo> sqlTest() {
+        return userDemoService.sqlTest();
     }
 
 }
