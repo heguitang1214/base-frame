@@ -1,5 +1,6 @@
 package com.tang.project.common;
 
+import jdk.nashorn.internal.objects.annotations.Constructor;
 import lombok.Data;
 
 
@@ -10,8 +11,34 @@ import lombok.Data;
  */
 @Data
 public class APIResponse<T> {
-    private boolean success;
-    private T data;
+
+    /**
+     * 响应码
+     */
     private int code;
+
+    /**
+     * 是否成功
+     */
+    private boolean success;
+
+    /**
+     * 数据
+     */
+    private T data;
+
+    /**
+     * 消息
+     */
     private String message;
+
+    public APIResponse() {
+    }
+
+    public APIResponse(int code, boolean success, T data, String message) {
+        this.code = code;
+        this.success = success;
+        this.data = data;
+        this.message = message;
+    }
 }
