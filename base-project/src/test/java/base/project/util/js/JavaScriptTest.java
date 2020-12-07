@@ -1,10 +1,12 @@
 package base.project.util.js;
 
 import com.tang.project.utils.JavaScriptUtil;
+import org.junit.Assert;
+import org.junit.Test;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
+import javax.script.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 解析JS表达式式，并执行
@@ -14,6 +16,8 @@ public class JavaScriptTest {
         scriptEvalTest();
 
         replaceValue();
+
+//        simpleBindings();
     }
 
     private static void scriptEvalTest() throws ScriptException {
@@ -59,4 +63,64 @@ public class JavaScriptTest {
         System.out.println("结果类型:" + result1.getClass().getName() + ",计算结果:" + result1);
 
     }
+
+    public static void simpleBindings() throws ScriptException {
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("js");
+        Map<String, Object> map = new HashMap<>();
+
+        String str = "['manage_customManager','poros-manage_customDevelop'].indexOf[code]";
+
+        map.put("code", "fox");
+
+//        Bindings bind = engine.createBindings();
+//        bind.put("code", "GSP");
+//        engine.setBindings(bind, ScriptContext.ENGINE_SCOPE);
+
+        Object result1 = engine.eval(str, new SimpleBindings(map));
+        System.out.println("结果类型:" + result1.getClass().getName() + ",计算结果:" + result1);
+
+    }
+
+
+    //=========================测试对includes的兼容
+    // Copied from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes#Polyfill
+    public static final String NASHORN_POLYFILL_STRING_PROTOTYPE_INCLUDES = "if (!String.prototype.includes) { Object.defineProperty(String.prototype, 'includes', { value: function(search, start) { if (typeof start !== 'number') { start = 0 } if (start + search.length > this.length) { return false } else { return this.indexOf(search, start) !== -1 } } }) }";
+    // Copied from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes#Polyfill
+    public static final String NASHORN_POLYFILL_ARRAY_PROTOTYPE_INCLUDES = "if (!Array.prototype.includes) { Object.defineProperty(Array.prototype, 'includes', { value: function(valueToFind, fromIndex) { if (this == null) { throw new TypeError('\"this\" is null or not defined'); } var o = Object(this); var len = o.length >>> 0; if (len === 0) { return false; } var n = fromIndex | 0; var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0); function sameValueZero(x, y) { return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y)); } while (k < len) { if (sameValueZero(o[k], valueToFind)) { return true; } k++; } return false; } }); }";
+
+    @Test
+    public void testStringIncludesWithPolyfill() throws Exception {
+        runScript(NASHORN_POLYFILL_STRING_PROTOTYPE_INCLUDES, "'[1, 2, 3]'.includes(2)");
+    }
+
+    @Test(expected = javax.script.ScriptException.class)
+    public void testStringIncludesWithoutPolyfill() throws Exception {
+        runScript(null, "'[1, 2, 3]'.includes(2)");
+    }
+
+    @Test
+    public void testArrayIncludesWithPolyfill() throws Exception {
+        runScript(NASHORN_POLYFILL_ARRAY_PROTOTYPE_INCLUDES, "[1, 2, 3].includes(2)");
+    }
+
+    @Test(expected = javax.script.ScriptException.class)
+    public void testArrayIncludesWithoutPolyfill() throws Exception {
+        runScript(null, "[1, 2, 3].includes(2)");
+    }
+
+    private void runScript(final String polyfill, final String booleanExpression) throws ScriptException {
+        final ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
+        final ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("nashorn");
+//        final ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("nashorn");
+        Assert.assertNotNull(scriptEngine);
+        if (null != polyfill) {
+            scriptEngine.eval(polyfill);
+        }
+        final Object booleanExpressionResult = scriptEngine.eval(booleanExpression);    // returns Boolean object
+        Assert.assertNotNull(booleanExpressionResult);
+        Assert.assertEquals(booleanExpressionResult.getClass(), Boolean.class);
+        System.out.println(booleanExpression + " = " + booleanExpressionResult.toString());
+    }
+
 }

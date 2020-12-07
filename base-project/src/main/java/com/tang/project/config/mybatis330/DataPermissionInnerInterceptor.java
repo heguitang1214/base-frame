@@ -20,6 +20,7 @@
 //import org.apache.ibatis.session.RowBounds;
 //
 //import java.sql.SQLException;
+//import java.util.ArrayList;
 //import java.util.List;
 //import java.util.Objects;
 //
@@ -31,9 +32,25 @@
 //@EqualsAndHashCode(callSuper = true)
 //public class DataPermissionInnerInterceptor extends JsqlParserSupport {
 //
-//    static List<String> name = Lists.newArrayList("mobile", "password");
-//    static List<String> value = Lists.newArrayList("110", "123456");
+//    /**
+//     * 模拟查询条件的字段名
+//     */
+//    static List<String> attr = Lists.newArrayList("sex", "sex");
+//
+//    /**
+//     * 模拟查询条件字段对应的值
+//     */
+//    static List<String> attrValue = Lists.newArrayList("100", "100");
+//
+//    /**
+//     * 模拟操作的表名
+//     */
 //    List<String> tableName = Lists.newArrayList("user_demo");
+//
+//    /**
+//     * 判断是做and拼接还是or拼接
+//     */
+//    private static boolean isOR = false;
 //
 //
 //    public void beforeQuery(Executor executor, MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) throws SQLException {
@@ -72,13 +89,17 @@
 //    protected void processPlainSelect(PlainSelect plainSelect) {
 //        FromItem fromItem = plainSelect.getFromItem();
 //        if (fromItem instanceof Table) {
+//            processSelectItems(plainSelect);
+//
 //            Table fromTable = (Table) fromItem;
 //            // 不是忽略的表名词
 //            if (tableName.contains(fromTable.getName())) {
 //                for (int i = 0; i < 2; i++) {
-//                    plainSelect.setWhere(builderExpression(plainSelect.getWhere(), fromTable, name.get(i), value.get(i), "="));
+//                    plainSelect.setWhere(builderExpression(plainSelect.getWhere(), fromTable, attr.get(i), attrValue.get(i), ">"));
+//                    isOR = true;
 //                }
 //            }
+//
 //        } else {
 //            processFromItem(fromItem);
 //        }
@@ -91,6 +112,35 @@
 //            });
 //        }
 //    }
+//
+//    /**
+//     * 处理数据库查询列
+//     *
+//     * @param plainSelect 普通查询
+//     */
+//    private void processSelectItems(PlainSelect plainSelect) {
+//        // 处理列
+//        List<SelectItem> newSelect = new ArrayList<>();
+//        for (SelectItem selectItem : plainSelect.getSelectItems()) {
+//            SelectExpressionItem selectExpressionItem = (SelectExpressionItem) selectItem;
+//            System.out.println("==============列信息=============");
+//            System.out.println("字段别名：" + selectExpressionItem.getAlias());
+//            System.out.println("字段信息：" + selectExpressionItem.getExpression());
+//
+//            Expression expression = selectExpressionItem.getExpression();
+//            if (expression instanceof Column) {
+//                Column column = (Column) expression;
+//                if (column.getColumnName().contains("name")) {
+//                    newSelect.add(selectItem);
+//                }
+//            }
+//            // 添加新列
+////                Column column = new Column(fromTable,"id");
+////                newSelect.add(new SelectExpressionItem(column));
+//        }
+//        plainSelect.setSelectItems(newSelect);
+//    }
+//
 //
 //    /**
 //     * 处理子查询等
@@ -134,7 +184,7 @@
 //            }
 //            // 做 on 的连接 todo 注意点
 //            for (int i = 0; i < 2; i++) {
-//                join.setOnExpression(builderExpression(join.getOnExpression(), fromTable, name.get(i), value.get(i), "="));
+//                join.setOnExpression(builderExpression(join.getOnExpression(), fromTable, attr.get(i), attrValue.get(i), "="));
 //            }
 //        }
 //    }
@@ -149,7 +199,8 @@
 //            }
 //
 //            for (int i = 0; i < 2; i++) {
-//                plainSelect.setWhere(builderExpression(plainSelect.getWhere(), fromTable, name.get(i), value.get(i), "="));
+//                plainSelect.setWhere(builderExpression(plainSelect.getWhere(), fromTable, attr.get(i), attrValue.get(i), "="));
+//                isOR = true;
 //            }
 //        }
 //    }
@@ -203,9 +254,15 @@
 //            }
 //        }
 //        if (currentExpression instanceof OrExpression) {
-//            return new AndExpression(new Parenthesis(currentExpression), expression);
+////            return new AndExpression(new Parenthesis(currentExpression), expression);
+//            return new OrExpression(currentExpression, new RightLeftParenthesis(expression));
 //        } else {
-//            return new AndExpression(currentExpression, expression);
+////            return new AndExpression(currentExpression, expression);
+//            if (!isOR) {
+//                return new AndExpression(currentExpression, new LeftParenthesis(expression));
+//            } else {
+//                return new OrExpression(currentExpression, new RightLeftParenthesis(expression));
+//            }
 //        }
 //    }
 //
@@ -238,24 +295,54 @@
 //
 //
 //    private Expression getExpression(Table table, String attr, String attrValue, String rule) {
-//        if (Objects.equals(StringPool.EQUALS, rule)) {
-//            EqualsTo result = new EqualsTo();
-//            result.setLeftExpression(this.getAliasColumn(table, attr));
-//            result.setRightExpression(new StringValue(attrValue));
-//            return result;
-//        } else if (Objects.equals(StringPool.RIGHT_CHEV + StringPool.EQUALS, rule.replaceAll(" ", ""))) {
-//            GreaterThanEquals result = new GreaterThanEquals();
-//            result.setLeftExpression(this.getAliasColumn(table, attr));
-//            result.setRightExpression(this.getAliasColumn(table, attr));
-//            return result;
-//        } else if (Objects.equals("in", rule)) {
+//
+//        ComparisonOperator comparisonOperator = getComparisonOperator(table, attr, attrValue, rule);
+//        if (comparisonOperator != null) {
+//            return comparisonOperator;
+//        }
+//        if (rule.contains("in")) {
 //            InExpression inExpression = new InExpression();
-//            // TODO: 2020/12/3
+//            inExpression.setLeftExpression(this.getAliasColumn(table, attr));
+//            List<Expression> expressions = new ArrayList<>();
+//            for (String value : attrValue.split(",")) {
+//                Expression expression = new StringValue(value);
+//                expressions.add(expression);
+//            }
+//            inExpression.setRightItemsList(new ExpressionList(expressions));
+//            if (rule.contains("not")) {
+//                inExpression.setNot(true);
+//            }
 //            return inExpression;
 //        } else {
-//            throw new RuntimeException("数据权限连接规则不支持");
+//            throw new RuntimeException("数据权限行规则连接规则不支持：" + rule);
 //        }
+//    }
 //
+//    private ComparisonOperator getComparisonOperator(Table table, String attr, String attrValue, String rule) {
+//        ComparisonOperator result = null;
+//        if (Objects.equals(StringPool.EQUALS, rule)) {
+//            result = new EqualsTo();
+//        } else if (Objects.equals(StringPool.EXCLAMATION_MARK + StringPool.EQUALS, rule)) {
+//            // 不等于
+//            result = new NotEqualsTo();
+//        } else if (Objects.equals(StringPool.RIGHT_CHEV + StringPool.EQUALS, rule)) {
+//            // 大于等于
+//            result = new GreaterThanEquals();
+//        } else if (Objects.equals(StringPool.LEFT_CHEV + StringPool.EQUALS, rule)) {
+//            // 小于等于
+//            result = new MinorThanEquals();
+//        } else if (Objects.equals(StringPool.RIGHT_CHEV, rule)) {
+//            // 大于
+//            result = new GreaterThan();
+//        } else if (Objects.equals(StringPool.LEFT_CHEV, rule)) {
+//            // 小于
+//            result = new MinorThan();
+//        } else {
+//            return result;
+//        }
+//        result.setLeftExpression(this.getAliasColumn(table, attr));
+//        result.setRightExpression(new StringValue(attrValue));
+//        return result;
 //    }
 //
 //}
