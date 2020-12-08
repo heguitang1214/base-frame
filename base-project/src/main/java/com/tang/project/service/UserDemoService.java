@@ -28,4 +28,7 @@ public class UserDemoService extends ServiceImpl<UserDemoMapper, UserDemo> {
         return this.getBaseMapper().sqlTest();
     }
 
+    public List<UserDemo> findByNames(String names) {
+        return this.getBaseMapper().findByNames(names);
+    }
 }

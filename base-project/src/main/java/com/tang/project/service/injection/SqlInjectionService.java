@@ -6,6 +6,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import javax.script.SimpleBindings;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -36,8 +43,50 @@ public class SqlInjectionService {
 
     public void jdbcwrong(String name) {
         //采用拼接SQL的方式把姓名参数拼到LIKE子句中
-        log.info("{}", jdbcTemplate.queryForList("SELECT id,name FROM userdata WHERE name LIKE '%" + name + "%'"));
+        List<Map<String, Object>> maps = jdbcTemplate.queryForList("SELECT id,name FROM userdata WHERE name LIKE '%" + name + "%'");
+//        log.info("{}", jdbcTemplate.queryForList("SELECT id,name FROM userdata WHERE name LIKE '%" + name + "%'"));
+        log.info("SQL注入分析，请求参数name为：{}，查询的结果为：{}", name, maps);
     }
 
 
+    public Object jswrong(String name) {
+        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
+        //获得JavaScript脚本引擎
+        ScriptEngine jsEngine = scriptEngineManager.getEngineByName("js");
+
+        try {
+            //通过eval动态执行JavaScript脚本，这里name参数通过字符串拼接方式混入JavaScript代码
+            log.info("执行ScriptEngine，传入的参数为：{}", name);
+            // 存在安全问题
+//            return jsEngine.eval(String.format("var name='%s'; name=='admin'?1:0;", name));
+
+            // 外部传入的参数
+            Map<String, Object> parm = new HashMap<>();
+            parm.put("name", name);
+            //name参数作为绑定传给eval方法，而不是拼接JavaScript代码
+            return jsEngine.eval("name=='admin'?1:0;", new SimpleBindings(parm));
+        } catch (ScriptException e) {
+            log.error("js引擎执行出现异常，异常信息为：", e);
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public Object scriptingSandbox(String name) {
+        // 使用沙箱执行脚本
+        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
+        //获得JavaScript脚本引擎
+        ScriptEngine jsEngine = scriptEngineManager.getEngineByName("js");
+
+        ScriptingSandbox scriptingSandbox;
+        try {
+            scriptingSandbox = new ScriptingSandbox(jsEngine);
+            return scriptingSandbox.eval(String.format("var name='%s'; name=='admin'?1:0;", name));
+        } catch (InstantiationException e) {
+            log.error("沙箱环境执行js代码出错，异常信息为：", e);
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

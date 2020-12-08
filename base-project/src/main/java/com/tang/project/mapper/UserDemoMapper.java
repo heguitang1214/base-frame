@@ -10,4 +10,5 @@ public interface UserDemoMapper extends BaseMapper<UserDemo> {
 
     List<UserDemo> sqlTest();
 
+    List<UserDemo> findByNames(String names);
 }

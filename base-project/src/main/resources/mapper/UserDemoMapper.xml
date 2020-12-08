@@ -2,22 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tang.project.mapper.UserDemoMapper">
 
-    <!-- 通用查询映射结果 -->
-    <!--    <resultMap id="BaseResultMap" type="com.tang.project.entry.UserDemo">-->
-    <!--        <result column="id" property="id"/>-->
-    <!--        <result column="user_name" property="userName"/>-->
-    <!--        <result column="password" property="password"/>-->
-    <!--        <result column="email" property="email"/>-->
-    <!--        <result column="addr" property="addr"/>-->
-    <!--        <result column="mobile" property="mobile"/>-->
-    <!--        <result column="sex" property="sex"/>-->
-    <!--    </resultMap>-->
-
     <select id="sqlTest" resultType="com.tang.project.entry.UserDemo">
         SELECT * FROM user_demo ORDER BY id DESC
 --         SELECT u.id,r.`name` as userName FROM user_demo u LEFT JOIN role_demo r ON u.id = r.user_demo_id
 --         WHERE u.password = '123456'
 --         ORDER BY u.id DESC
+    </select>
+
+
+    <!--    ${names} 有SQL注入的风险-->
+    <select id="findByNames" resultType="com.tang.project.entry.UserDemo">
+        SELECT id,name FROM `userdata` WHERE name in (${names})
     </select>
 
 </mapper>
