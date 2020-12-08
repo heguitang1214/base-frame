@@ -13,11 +13,13 @@ import java.util.Map;
  */
 public class JavaScriptTest {
     public static void main(String[] args) throws Exception {
-        scriptEvalTest();
+//        scriptEvalTest();
 
-        replaceValue();
+//        replaceValue();
 
 //        simpleBindings();
+
+        includes();
     }
 
     private static void scriptEvalTest() throws ScriptException {
@@ -83,10 +85,34 @@ public class JavaScriptTest {
     }
 
 
+    public static void includes() throws ScriptException {
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("js");
+
+        String str = "['manage_customManager','poros-manage_customDevelop'].includes[code]";
+        // 支持
+        str = "'[poros-manage_customManager, poros-manage_customDevelop]'.includes('code')";
+        // 支持
+        str = "'[manage_customManager, manage_customDevelop, 3]'.includes('customDevelop1')";
+        // 支持 字符传like
+        str = "'poros-manage_customManager,aaabbb'.includes(',a')";
+        // 支持 in NASHORN_POLYFILL_ARRAY_PROTOTYPE_INCLUDES
+//        str = "!['poros-manage_customManager', 'poros-manage_customDevelop'].includes('code')";
+        str = "![1, 2].includes(2)";
+
+        engine.eval(NASHORN_POLYFILL_ARRAY_PROTOTYPE_INCLUDES);
+        Object result1 = engine.eval(str);
+        System.out.println("结果类型:" + result1.getClass().getName() + ",计算结果:" + result1);
+
+    }
+
+
     //=========================测试对includes的兼容
     // Copied from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes#Polyfill
+    // 字符串处理
     public static final String NASHORN_POLYFILL_STRING_PROTOTYPE_INCLUDES = "if (!String.prototype.includes) { Object.defineProperty(String.prototype, 'includes', { value: function(search, start) { if (typeof start !== 'number') { start = 0 } if (start + search.length > this.length) { return false } else { return this.indexOf(search, start) !== -1 } } }) }";
     // Copied from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes#Polyfill
+    // 数组的处理
     public static final String NASHORN_POLYFILL_ARRAY_PROTOTYPE_INCLUDES = "if (!Array.prototype.includes) { Object.defineProperty(Array.prototype, 'includes', { value: function(valueToFind, fromIndex) { if (this == null) { throw new TypeError('\"this\" is null or not defined'); } var o = Object(this); var len = o.length >>> 0; if (len === 0) { return false; } var n = fromIndex | 0; var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0); function sameValueZero(x, y) { return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y)); } while (k < len) { if (sameValueZero(o[k], valueToFind)) { return true; } k++; } return false; } }); }";
 
     @Test

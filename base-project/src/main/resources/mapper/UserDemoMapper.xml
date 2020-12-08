@@ -14,10 +14,10 @@
     <!--    </resultMap>-->
 
     <select id="sqlTest" resultType="com.tang.project.entry.UserDemo">
---         SELECT * FROM user_demo ORDER BY id DESC
-        SELECT u.id,r.`name` as userName FROM user_demo u LEFT JOIN role_demo r ON u.id = r.user_demo_id
-        WHERE u.password = '123456'
-        ORDER BY u.id DESC
+        SELECT * FROM user_demo ORDER BY id DESC
+--         SELECT u.id,r.`name` as userName FROM user_demo u LEFT JOIN role_demo r ON u.id = r.user_demo_id
+--         WHERE u.password = '123456'
+--         ORDER BY u.id DESC
     </select>
 
 </mapper>
