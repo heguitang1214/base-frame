@@ -2,6 +2,9 @@ package com.tang.project.common;
 
 import lombok.Getter;
 
+/**
+ * 统一返回的异常信息
+ */
 public class APIException extends RuntimeException {
     @Getter
     private int errorCode;

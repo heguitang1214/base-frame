@@ -1,6 +1,9 @@
 package com.tang.project.common;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.MediaType;
@@ -10,6 +13,7 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 @Slf4j
 public class APIResponseAdvice implements ResponseBodyAdvice<Object> {
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     /**
      * 服务器错误状态码
@@ -42,6 +49,16 @@ public class APIResponseAdvice implements ResponseBodyAdvice<Object> {
         apiResponse.setSuccess(false);
         apiResponse.setCode(ex.getErrorCode());
         apiResponse.setMessage(ex.getErrorMessage());
+        return apiResponse;
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public APIResponse<Object> handleException(NoHandlerFoundException ex) {
+        log.error(ex.getMessage(), ex);
+        APIResponse<Object> apiResponse = new APIResponse<>();
+        apiResponse.setSuccess(false);
+        apiResponse.setCode(4000);
+        apiResponse.setMessage(ex.getMessage());
         return apiResponse;
     }
 
@@ -80,6 +97,7 @@ public class APIResponseAdvice implements ResponseBodyAdvice<Object> {
      * springmvc会使用 StringHttpMessageConverter 转换器，这时候会报转换错误。
      * 解决方式：把MappingJackson2HttpMessageConverter放在最前面即可，或者在ResponseBodyAdvice里面判断类型，特殊处理
      */
+    @SneakyThrows
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
                                   Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
@@ -87,10 +105,16 @@ public class APIResponseAdvice implements ResponseBodyAdvice<Object> {
         apiResponse.setSuccess(true);
         apiResponse.setMessage("OK");
         apiResponse.setCode(2000);
-        if (body instanceof String) {
-            System.out.println(body);
-        }
         apiResponse.setData(body);
-        return apiResponse;
+        // 特殊处理返回值为String的类型
+        if (body instanceof String) {
+            response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+            return objectMapper.writeValueAsString(apiResponse);
+        } else {
+            return apiResponse;
+        }
     }
+
+
+
 }

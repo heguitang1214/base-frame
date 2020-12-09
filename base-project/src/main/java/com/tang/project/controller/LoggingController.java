@@ -22,7 +22,6 @@ public class LoggingController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-
     @GetMapping("/print")
     public void log() {
         log.debug("debug");
@@ -30,7 +29,6 @@ public class LoggingController {
         log.warn("warn");
         log.error("error");
     }
-
 
     @GetMapping("/performance")
     public void performance(@RequestParam(name = "count", defaultValue = "1000") int count) {
