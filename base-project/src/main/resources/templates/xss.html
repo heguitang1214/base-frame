@@ -1,0 +1,7 @@
+<div style="font-size: 14px" xmlns:th="http://www.w3.org/1999/xhtml">
+    <form id="myForm" method="post" th:action="@{/xss/}">
+        <label th:utext="${username}"/>
+        <input id="username" name="username" size="100" type="text"/>
+        <button th:text="Register" type="submit"/>
+    </form>
+</div>
