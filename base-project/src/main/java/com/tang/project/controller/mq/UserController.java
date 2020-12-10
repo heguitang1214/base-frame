@@ -1,6 +1,6 @@
-//package com.tang.project.controller;
+//package com.tang.project.controller.mq;
 //
-//
+//import com.tang.project.service.UserDemoService;
 //import lombok.extern.slf4j.Slf4j;
 //import org.springframework.amqp.rabbit.core.RabbitTemplate;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -11,33 +11,28 @@
 //import java.util.concurrent.ThreadLocalRandom;
 //import java.util.stream.IntStream;
 //
-///**
-// * 异步处理消息中心demo
-// */
 //@RestController
 //@Slf4j
-//@RequestMapping("message")
-//public class MessageController {
+//@RequestMapping("/user")
+//public class UserController {
 //
-//    //        @Autowired
-////        private UserService userService;
+//    @Autowired
+//    private UserDemoService userService;
 //    @Autowired
 //    private RabbitTemplate rabbitTemplate;
 //
-//    @GetMapping("register")
+//    @GetMapping("/register")
 //    public void register() {
 //        //模拟10个用户注册
 //        IntStream.rangeClosed(1, 10).forEach(i -> {
 //            //落库
-////                User user = userService.register();
+//            User user = userService.register();
 //            //模拟50%的消息可能发送失败
 //            if (ThreadLocalRandom.current().nextInt(10) % 2 == 0) {
 //                //通过RabbitMQ发送消息
-//                rabbitTemplate.convertAndSend(RabbitConfiguration.EXCHANGE, RabbitConfiguration.ROUTING_KEY, user);
+//               rabbitTemplate.convertAndSend(RabbitConfiguration.EXCHANGE, RabbitConfiguration.ROUTING_KEY, user);
 //                log.info("sent mq user {}", user.getId());
 //            }
 //        });
 //    }
-//
-//
 //}

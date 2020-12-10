@@ -84,7 +84,7 @@ public class APIResponseAdvice implements ResponseBodyAdvice<Object> {
      * @param converterType 转换类型
      */
     @Override
-    public boolean supports(MethodParameter returnType, Class converterType) {
+    public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         return returnType.getParameterType() != APIResponse.class
                 && AnnotationUtils.findAnnotation(returnType.getMethod(), NoAPIResponse.class) == null
                 && AnnotationUtils.findAnnotation(returnType.getDeclaringClass(), NoAPIResponse.class) == null;
